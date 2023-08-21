@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS geojsons (
+    id SERIAL PRIMARY KEY,
+	name TEXT NOT NULL,
+    geojson_data JSONB NOT NULL
+);
