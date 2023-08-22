@@ -17,3 +17,8 @@ pub struct NewGeoJSONData {
     pub name: String,
     pub geojson_data: serde_json::Value,
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct GeoJSONList {
+    pub geojson_list: Vec<GeoJSONData>,
+}

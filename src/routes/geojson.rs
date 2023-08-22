@@ -3,6 +3,7 @@ use diesel::{
 };
 use geojson_server::database::establish_connection;
 use geojson_server::models::GeoJSONData;
+use geojson_server::models::GeoJSONList;
 use geojson_server::models::NewGeoJSONData;
 use geojson_server::schema::geojsons::dsl::*;
 use geojson_server::schema::geojsons::geojson_data;
@@ -13,13 +14,13 @@ use rocket::State;
 use rocket::{get, http::Status};
 
 #[get("/geojsons")]
-pub fn get_geojson() -> Status {
+pub fn get_geojson() -> Json<GeoJSONList> {
     let connection = &mut establish_connection();
 
     // let results = select_a
-    let all_users: Vec<GeoJSONData> = geojsons.load(connection).expect("Error loading geojsons");
+    let geojson_list: Vec<GeoJSONData> = geojsons.load(connection).expect("Error loading geojsons");
 
-    Status::Ok
+    Json(GeoJSONList { geojson_list })
 }
 
 #[post("/geojsons", format = "json", data = "<geojson>")]
