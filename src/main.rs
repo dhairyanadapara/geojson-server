@@ -2,14 +2,8 @@
 extern crate rocket;
 
 // use crate::routes;
-use rocket::routes;
-use std::env;
-
-use diesel::pg::PgConnection;
-use diesel::r2d2::ConnectionManager;
-use diesel::r2d2::Pool;
-
 use dotenv::dotenv;
+use rocket::routes;
 
 mod routes;
 
@@ -17,7 +11,7 @@ mod routes;
 async fn main() {
     dotenv().ok();
 
-    rocket::build()
+    match rocket::build()
         .mount(
             "/api",
             routes![
@@ -27,7 +21,9 @@ async fn main() {
             ],
         )
         .launch()
-        .await;
-
-    println!("Server started");
+        .await
+    {
+        Ok(_) => println!("Server started"),
+        Err(e) => println!("Failed to start server {:?}", e),
+    }
 }
